@@ -18,4 +18,27 @@ class Tree
 
     root
   end
+
+  def insert(value)
+    node = @root
+    reached_leaf_node = false
+
+    until reached_leaf_node do
+      if value < node.data
+        if node.left.nil?
+          reached_leaf_node = true
+          node.left = Node.new(value)
+        else
+          node = node.left
+        end
+      elsif value > node.data
+        if node.right.nil?
+          reached_leaf_node = true
+          node.right = Node.new(value)
+        else
+          node = node.right
+        end
+      end
+    end # loop
+  end
 end

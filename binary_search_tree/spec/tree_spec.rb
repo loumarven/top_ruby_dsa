@@ -17,24 +17,72 @@ describe Tree, "#build_tree" do
     expect(tree.root.left.data).to eq(4)
     expect(tree.root.right.data).to eq(67)
 
-    l1_left = tree.root.left
-    expect(l1_left.left.data).to eq(1)
-    expect(l1_left.right.data).to eq(5)
+    l2_left = tree.root.left
+    expect(l2_left.left.data).to eq(1)
+    expect(l2_left.right.data).to eq(5)
 
-    l2_left_left = l1_left.left
-    expect(l2_left_left.right.data).to eq(3)
+    l3_left_left = l2_left.left
+    expect(l3_left_left.right.data).to eq(3)
 
-    l2_left_right = l1_left.right
-    expect(l2_left_right.right.data).to eq(7)
+    l3_left_right = l2_left.right
+    expect(l3_left_right.right.data).to eq(7)
 
-    l1_right = tree.root.right
-    expect(l1_right.left.data).to eq(9)
-    expect(l1_right.right.data).to eq(324)
+    l2_right = tree.root.right
+    expect(l2_right.left.data).to eq(9)
+    expect(l2_right.right.data).to eq(324)
 
-    l2_right_left = l1_right.left
-    expect(l2_right_left.right.data).to eq(23)
+    l3_right_left = l2_right.left
+    expect(l3_right_left.right.data).to eq(23)
 
-    l2_right_right = l1_right.right
-    expect(l2_right_right.right.data).to eq(6345)
+    l3_right_right = l2_right.right
+    expect(l3_right_right.right.data).to eq(6345)
+  end
+end
+
+describe Tree, "#insert" do
+  let(:tree) { Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) }
+
+  context "when value being inserted is greater than root node" do
+    it "inserts the value to the right subtree leaf node" do
+      tree.insert(50)
+
+      # resulting tree:
+      # 
+      #       8
+      #    /     \
+      #   4        67
+      #  / \      /  \
+      # 1   5    9   324
+      #  \   \    \    \
+      #   3   7    23   6345 
+      #             \
+      #              50
+
+      parent_node = tree.root.right.left.right
+      expect(parent_node.data).to eq(23)
+      expect(parent_node.right.data).to eq(50)
+    end
+  end
+
+  context "when value being inserted is less than root node" do
+    it "inserts the value to the left subtree leaf node" do
+      tree.insert(0)
+
+      # resulting tree:
+      # 
+      #         8
+      #      /     \
+      #     4        67
+      #    / \      /  \
+      #   1   5    9   324
+      #  / \   \    \    \
+      # 0   3   7    23   6345 
+      #               \
+      #                50
+
+      parent_node = tree.root.left.left
+      expect(parent_node.data).to eq(1)
+      expect(parent_node.left.data).to eq(0)
+    end
   end
 end
