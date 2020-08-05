@@ -41,4 +41,23 @@ class Tree
       end
     end # loop
   end
+
+  # returns node holding the given value
+  def find(value)
+    queue = Queue.new
+    queue.enqueue(root)
+
+    until queue.empty? do
+      node = queue.dequeue
+
+      if node.data == value
+        return node
+      else
+        queue.enqueue(node.left) if node.left
+        queue.enqueue(node.right) if node.right
+      end
+    end
+
+    nil # not found
+  end
 end

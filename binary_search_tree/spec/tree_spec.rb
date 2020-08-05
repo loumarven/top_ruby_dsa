@@ -1,17 +1,18 @@
 require 'tree'
+require 'queue'
 
 describe Tree, "#build_tree" do
   it "builds the tree correctly and returns the root node" do
     tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
     # resulting tree:
     # 
-    #       8
-    #    /     \
-    #   4        67
-    #  / \      /  \
-    # 1   5    9   324
-    #  \   \    \    \
-    #   3   7    23   6345 
+    #         8
+    #      /     \
+    #     4        67
+    #    / \      /  \
+    #   1   5    9   324
+    #    \   \    \    \
+    #     3   7    23   6345 
 
     expect(tree.root.data).to eq(8)
     expect(tree.root.left.data).to eq(4)
@@ -48,15 +49,15 @@ describe Tree, "#insert" do
 
       # resulting tree:
       # 
-      #       8
-      #    /     \
-      #   4        67
-      #  / \      /  \
-      # 1   5    9   324
-      #  \   \    \    \
-      #   3   7    23   6345 
-      #             \
-      #              50
+      #         8
+      #      /     \
+      #     4        67
+      #    / \      /  \
+      #   1   5    9   324
+      #    \   \    \    \
+      #      3   7    23   6345 
+      #                \
+      #                 50
 
       parent_node = tree.root.right.left.right
       expect(parent_node.data).to eq(23)
@@ -83,6 +84,65 @@ describe Tree, "#insert" do
       parent_node = tree.root.left.left
       expect(parent_node.data).to eq(1)
       expect(parent_node.left.data).to eq(0)
+    end
+  end
+end
+
+=begin
+describe Tree, "#delete" do
+  let(:tree) { Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) }
+  #         8
+  #      /     \
+  #     4        67
+  #    / \      /  \
+  #   1   5    9   324
+  #    \   \    \    \
+  #     3   7    23   6345 
+
+  context "node to be deleted is a leaf node" do
+    it "deletes the node from the tree" do
+      tree.delete(6345)
+      
+      # resulting tree:
+      # 
+      #         8
+      #      /     \
+      #     4        67
+      #    / \      /  \
+      #   1   5    9   324
+      #    \   \    \
+      #     3   7    23 
+      parent_node = tree.right.right
+      expect(parent_node.data).to eq(324)
+      expect(parent_node.right).to be_nil
+    end
+  end
+end
+=end
+
+describe Tree, "#find" do
+  let(:tree) { Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) }
+  #         8
+  #      /     \
+  #     4        67
+  #    / \      /  \
+  #   1   5    9   324
+  #    \   \    \    \
+  #     3   7    23   6345 
+
+  context "when the given value is in the tree" do
+    it "returns the node holding the given value" do
+      node = tree.find(9)
+      expect(node).to be_truthy
+      expect(node.data).to eq(9)
+      expect(node.right.data).to eq(23)
+    end
+  end
+
+  context "when the given value is not in the tree" do
+    it "returns nil" do
+      node = tree.find(80)
+      expect(node).to be_nil
     end
   end
 end
