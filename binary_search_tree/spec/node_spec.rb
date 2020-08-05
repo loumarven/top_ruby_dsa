@@ -46,7 +46,7 @@ describe Node, "#left" do
   end
 end
 
-describe Node, "#left" do
+describe Node, "#right" do
   let(:node) { Node.new }
 
   context "when a node is initialized" do
