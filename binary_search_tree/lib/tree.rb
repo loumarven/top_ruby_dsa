@@ -44,20 +44,46 @@ class Tree
 
   # returns node holding the given value
   def find(value)
-    queue = Queue.new
-    queue.enqueue(root)
+    node = root
 
-    until queue.empty? do
-      node = queue.dequeue
+    loop do
+      break if node.nil?
 
-      if node.data == value
-        return node
-      else
-        queue.enqueue(node.left) if node.left
-        queue.enqueue(node.right) if node.right
+      if value == node.data
+        break
+      elsif  value < node.data
+        node = node.left
+      elsif value > node.data
+        node = node.right
       end
     end
 
-    nil # not found
+    node
+  end
+
+  def delete(value)
+    # 1. find value in tree
+    # 2. if leaf node, simply delete the node from tree
+
+    # assume value is in tree
+    node = find(value)
+    if leaf?(node)
+      
+    else
+    end
+  end
+
+  private
+  def leaf?(node)
+    childrent_count(node) == 0
+  end
+
+  def children_count(node)
+    count = 0
+
+    count += 1 if node.left
+    count += 1 if node.right
+
+    count
   end
 end
