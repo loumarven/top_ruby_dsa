@@ -1,5 +1,4 @@
 require 'tree'
-require 'queue'
 
 describe Tree, "#build_tree" do
   it "builds the tree correctly and returns the root node" do
@@ -88,7 +87,6 @@ describe Tree, "#insert" do
   end
 end
 
-=begin
 describe Tree, "#delete" do
   let(:tree) { Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) }
   #         8
@@ -112,13 +110,12 @@ describe Tree, "#delete" do
       #   1   5    9   324
       #    \   \    \
       #     3   7    23 
-      parent_node = tree.right.right
+      parent_node = tree.root.right.right
       expect(parent_node.data).to eq(324)
       expect(parent_node.right).to be_nil
     end
   end
 end
-=end
 
 describe Tree, "#find" do
   let(:tree) { Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) }
