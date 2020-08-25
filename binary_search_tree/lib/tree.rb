@@ -73,7 +73,7 @@ class Tree
     # assume value is in tree
     # TODO: handle case where value is not found in tree
     node = find(value)
-    if leaf?(node)
+    if node.leaf?
       remove_leaf(node)
     else
       # TODO: support cases for 1 child and 2 children
@@ -82,19 +82,6 @@ class Tree
 
   private
   attr_reader :parent # used to track a node's parent
-
-  def leaf?(node)
-    children_count(node) == 0
-  end
-
-  def children_count(node)
-    count = 0
-
-    count += 1 if node.left
-    count += 1 if node.right
-
-    count
-  end
 
   def remove_leaf(node)
     # identify if node is left or right child of parent
