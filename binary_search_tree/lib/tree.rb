@@ -2,7 +2,6 @@ class Tree
   attr_reader :root
 
   def initialize(array)
-    @parent = nil
     @root = build_tree(array.uniq.sort)
   end
 
@@ -13,10 +12,6 @@ class Tree
 
     mid = (array.length - 1) / 2
     root = Node.new(array[mid])
-
-    # TODO: is there a better way to track a node's parent?
-    root.parent = parent
-    @parent = root
 
     root.left = build_tree(array[0...mid])
     root.right = build_tree(array[mid+1..-1])
@@ -52,14 +47,18 @@ class Tree
     node = root
 
     loop do
-      break if node.nil?
-
-      if value == node.data
+      if node.nil? || value == node.data
         break
       elsif  value < node.data
+        # TODO: move parent tracking somewhere else
+        temp = node
         node = node.left
+        node.parent = temp unless node.nil?
       elsif value > node.data
+        # TODO: move parent tracking somewhere else
+        temp = node
         node = node.right
+        node.parent = temp unless node.nil?
       end
     end
 
@@ -77,12 +76,17 @@ class Tree
       remove_leaf(node)
     else
       # TODO: support cases for 1 child and 2 children
+      children = node.children_count
+      if children == 1
+        # copy child to node
+        # delete node
+        remove_node_one_child(node)
+      else # 2
+      end
     end
   end
 
   private
-  attr_reader :parent # used to track a node's parent
-
   def remove_leaf(node)
     # identify if node is left or right child of parent
     # set node's parent left/right value to nil
@@ -90,6 +94,16 @@ class Tree
       node.parent.left = nil
     else
       node.parent.right = nil
+    end
+  end
+
+  def remove_node_one_child(node)
+    if node == node.parent.left
+      node.parent.left = node.child
+      node = nil
+    else
+      node.parent.right = node.child
+      node = nil
     end
   end
 end

@@ -99,8 +99,11 @@ describe Tree, "#delete" do
 
   context "node to be deleted is a leaf node" do
     it "deletes the node from the tree" do
+      node = tree.find(6345)
+      parent = node.parent
+      expect(parent.data).to eq(324)
+
       tree.delete(6345)
-      
       # resulting tree:
       # 
       #         8
@@ -110,9 +113,26 @@ describe Tree, "#delete" do
       #   1   5    9   324
       #    \   \    \
       #     3   7    23 
-      parent_node = tree.root.right.right
-      expect(parent_node.data).to eq(324)
-      expect(parent_node.right).to be_nil
+      expect(parent.right).to be_nil
+    end
+  end
+
+  context "node to be deleted has one child" do
+    it "copies the node's child and delete's the node" do
+      node = tree.find(5)
+      parent = node.parent
+      expect(parent.data).to eq(4)
+
+      tree.delete(5)
+      # resulting tree:
+      #         8
+      #      /     \
+      #     4        67
+      #    / \      /  \
+      #   1   7    9   324
+      #    \        \    \
+      #     3        23   6345
+      expect(parent.right.data).to eq(7)
     end
   end
 end

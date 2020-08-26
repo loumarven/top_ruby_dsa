@@ -12,7 +12,6 @@ class Node
     children_count == 0
   end
 
-  private
   def children_count
     count = 0
 
@@ -20,5 +19,9 @@ class Node
     count += 1 if self.right
 
     count
+  end
+
+  def child
+    self.left ? self.left : self.right
   end
 end
